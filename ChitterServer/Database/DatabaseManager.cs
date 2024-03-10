@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 
 namespace ChitterServer.Database {
     internal class DatabaseManager {
+        private const string DB_NAME = "./chitter.db";
+
         private static readonly ILog _Log = LogManager.GetLogger( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType );
 
         private readonly string _FileName;
 
-        internal DatabaseManager( string file_name ) {
-            this._FileName = file_name;
+        internal DatabaseManager() {
+            this._FileName = DB_NAME;
 
             _Log.Info( "DatabaseManager -> INITIALISED!" );
         }

@@ -2,11 +2,13 @@
 using ChitterServer.Communication.Handlers.Incoming;
 using ChitterServer.Communication.Handlers.Outgoing;
 using ChitterServer.Communication.Utils;
+using ChitterServer.Database.Adapters;
 using Fleck;
 using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,13 +17,15 @@ namespace ChitterServer.Communication {
     internal class CommunicationManager {
         private static readonly ILog _Log = LogManager.GetLogger( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType );
 
+        private const string WS_LOCATION_SETTING_KEY = "ws_location";
+
         private IWebSocketServer _WebSocketServer;
         private CommunicationClientManager _CommunicationClientManager;
 
         private IncomingMessageManager _IncomingMessageMAnager;
 
-        internal CommunicationManager( string host, uint port ) {
-            this._WebSocketServer = new WebSocketServer( $"ws://{host}:{port}" ); // TODO: let's parse this better...
+        internal CommunicationManager() {
+            this._WebSocketServer = new WebSocketServer( ChitterEnvironment.SettingsManager.GetSetting( "ws_location" ) );
 
             // configure fleck to use log4net
             FleckLog.LogAction = ( level, message, ex ) => {
@@ -121,6 +125,22 @@ namespace ChitterServer.Communication {
 
             _Log.Info( $"Sent message to {display_name} -> {json_msg}" );
         }
+
+        /* public string Location {
+            get {
+                string location;
+
+                using(QueryReactor reactor = ChitterEnvironment.DatabaseManager.CreateQueryReactor()) {
+                    reactor.Query = "SELECT `value` FROM `settings` WHERE `key` = @key";
+                    reactor.AddParameter( "key", WS_LOCATION_SETTING_KEY );
+
+                    try {
+                        DataRow row = reactor.Row;
+                        location = Convert.ToString( row[ "value" ] );
+                    }
+                }
+            }
+        }*/
 
         internal CommunicationClientManager CommunicationClientManager { get => this._CommunicationClientManager; }
     }
