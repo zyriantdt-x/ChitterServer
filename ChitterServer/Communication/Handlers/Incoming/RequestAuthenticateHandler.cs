@@ -21,11 +21,13 @@ namespace ChitterServer.Communication.Handlers.Incoming {
 
             // verify args
             if( !message.Body.TryGetValue( "username", out username_as_obj ) ) {
-                // reject
+                communication_client.Send( new AuthenticationFailedHandler() );
+                return;
             }
 
             if( !message.Body.TryGetValue( "password", out password_as_obj ) ) {
-                // reject
+                communication_client.Send( new AuthenticationFailedHandler() );
+                return;
             }
 
             ChatUser chat_user;
