@@ -4,19 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
-using Microsoft.Data.Sqlite;
+using System.Data.SQLite;
 using ChitterServer.Database.Adapters;
 
 namespace ChitterServer.Database {
     internal class DatabaseClient : IDisposable {
-        private readonly SqliteConnection _Connection;
+        private readonly SQLiteConnection _Connection;
         private readonly QueryReactor _QueryReactor;
 
         internal DatabaseClient( string file_name ) {
-            SqliteConnectionStringBuilder sqlite_string = new SqliteConnectionStringBuilder();
+            SQLiteConnectionStringBuilder sqlite_string = new SQLiteConnectionStringBuilder();
             sqlite_string.DataSource = file_name;
 
-            this._Connection = new SqliteConnection( sqlite_string.ToString() );
+            this._Connection = new SQLiteConnection( sqlite_string.ToString() );
             this._QueryReactor = new QueryReactor( this );
         }
 
@@ -37,7 +37,7 @@ namespace ChitterServer.Database {
                 this._Connection.Close();
         }
 
-        internal SqliteCommand CreateSqliteCommand() {
+        internal SQLiteCommand CreateSqliteCommand() {
             return this._Connection.CreateCommand();
         }
 

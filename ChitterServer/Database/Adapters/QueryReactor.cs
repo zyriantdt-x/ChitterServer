@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using System.Data.SQLite;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ChitterServer.Database.Adapters {
     internal class QueryReactor : IDisposable {
         private DatabaseClient _DatabaseClient;
-        private SqliteCommand _SQLiteCommand;
+        private SQLiteCommand _SQLiteCommand;
 
         internal QueryReactor(DatabaseClient database_client) {
             if( database_client == null )
@@ -27,7 +27,7 @@ namespace ChitterServer.Database.Adapters {
             if( value == null )
                 throw new ArgumentNullException( "value" );
 
-            SqliteParameter param_added = this._SQLiteCommand.Parameters.AddWithValue( key, value );
+            SQLiteParameter param_added = this._SQLiteCommand.Parameters.AddWithValue( key, value );
 
             if( param_added == null )
                 throw new Exception( $"Unable to add SQLite parameter {key}" );
@@ -38,7 +38,7 @@ namespace ChitterServer.Database.Adapters {
                 bool has_results;
 
                 try {
-                    using( SqliteDataReader reader = this._SQLiteCommand.ExecuteReader() ) {
+                    using( SQLiteDataReader reader = this._SQLiteCommand.ExecuteReader() ) {
                         has_results = reader.HasRows;
                     }
                 } catch( Exception ex ) {
@@ -59,7 +59,7 @@ namespace ChitterServer.Database.Adapters {
 
                 try {
                     DataTable data_table = new DataTable();
-                    using( SqliteDataReader reader = this._SQLiteCommand.ExecuteReader() ) {
+                    using( SQLiteDataReader reader = this._SQLiteCommand.ExecuteReader() ) {
                         data_table.Load( reader );
                     }
 
@@ -84,7 +84,7 @@ namespace ChitterServer.Database.Adapters {
                 DataTable table = new DataTable();
 
                 try {
-                    using( SqliteDataReader reader = this._SQLiteCommand.ExecuteReader() ) {
+                    using( SQLiteDataReader reader = this._SQLiteCommand.ExecuteReader() ) {
                         table.Load( reader );
                     }
 
