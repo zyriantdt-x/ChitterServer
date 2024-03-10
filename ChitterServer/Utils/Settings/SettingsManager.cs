@@ -15,6 +15,10 @@ namespace ChitterServer.Utils.Settings {
 
         internal SettingsManager() {
             this._Settings = new Dictionary<string, string>();
+
+            this.RegisterSettings();
+
+            _Log.Info( "SettingsManager -> INITALISED!" );
         }
 
         private void RegisterSettings() {
