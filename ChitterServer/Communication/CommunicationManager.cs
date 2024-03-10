@@ -95,7 +95,7 @@ namespace ChitterServer.Communication {
                         IIncomingMessageHandler message_handler = this._IncomingMessageMAnager.GetMessageHandler( payload.Message );
 
                         message_handler.Handle( communication_client, payload );
-                    } catch( Exception ex ) {
+                    } catch( Exception ex ) { // if we're going to send the exception to user, we should catch the exceptions to send crafted messages just in case we give away too much data...
                         _Log.Error( $"Failed to handle incoming message -> {ex.Message}" );
 
                         communication_client.Send( new GenericErrorHandler( ex.GetType().Name, ex.Message ) );
