@@ -54,8 +54,15 @@ namespace ChitterServer.Chat.Channels {
             this._Channels.Add( channel );
         }
         
-        internal void GetChannel() {
+        internal void GetChannel( string uuid ) {
+            if( uuid == null )
+                throw new ArgumentNullException( "uuid" );
 
+            Channel channel = this._Channels.FirstOrDefault( x => x.Uuid == uuid );
+            if( channel == null )
+                throw new ChannelNotFoundException( uuid );
+
+            return channel;
         }
 
         internal static ILog Log { get => _Log; }
