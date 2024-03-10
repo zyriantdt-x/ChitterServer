@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ChitterServer.Communication.Clients {
-    internal class CommunicationClient {
+    internal class CommunicationClient : IDisposable {
         private IWebSocketConnection _WebSocketConnection;
 
         private bool _IsAuthenticated;
@@ -18,14 +18,16 @@ namespace ChitterServer.Communication.Clients {
         internal CommunicationClient( IWebSocketConnection web_socket_connection ) {
             this._WebSocketConnection = web_socket_connection;
             this._IsAuthenticated = false;
+
+            ChitterEnvironment.CommunicationManager.CommunicationClientManager.RegisterCommunicationClient( this );
         }
 
         internal void Send( OutgoingMessage message ) {
             string serialised_message = message.ToString();
             WebSocketConnection.Send( serialised_message );
 
-            string identifier = this._IsAuthenticated ? this._ChatUser.Username : this._WebSocketConnection.ConnectionInfo.ClientIpAddress;
-            CommunicationManager.LogOutboundMessage( identifier, serialised_message );
+            string display_name = this._IsAuthenticated ? this._ChatUser.Username : this._WebSocketConnection.ConnectionInfo.ClientIpAddress;
+            CommunicationManager.LogOutboundMessage( display_name, serialised_message );
         }
 
         internal void Authenticate( ChatUser chat_user ) {
@@ -34,6 +36,15 @@ namespace ChitterServer.Communication.Clients {
 
             this._IsAuthenticated = true;
             this._ChatUser = chat_user;
+        }
+
+        public void Dispose() {
+            ChitterEnvironment.CommunicationManager.CommunicationClientManager.DeregisterCommunicationClient( this );
+
+            if( this._IsAuthenticated )
+                _ChatUser.Dispose();
+
+            _WebSocketConnection.Close();
         }
 
         internal IWebSocketConnection WebSocketConnection { get => _WebSocketConnection; }

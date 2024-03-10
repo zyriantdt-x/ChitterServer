@@ -100,6 +100,7 @@
     <Compile Include="Chat\ChatManager.cs" />
     <Compile Include="Chat\Users\ChatUser.cs" />
     <Compile Include="Chat\Users\ChatUserManager.cs" />
+    <Compile Include="Chat\Users\UserNotFoundException.cs" />
     <Compile Include="ChitterEnvironment.cs" />
     <Compile Include="Communication\Clients\ClientNotAuthenticatedException.cs" />
     <Compile Include="Communication\Clients\CommunicationClientNotFoundException.cs" />
@@ -109,7 +110,10 @@
     <Compile Include="Communication\Handlers\Incoming\IIncomingMessageHandler.cs" />
     <Compile Include="Communication\Handlers\Incoming\IncomingEventNotFoundException.cs" />
     <Compile Include="Communication\Handlers\Incoming\IncomingMessageManager.cs" />
+    <Compile Include="Communication\Handlers\Incoming\MalformedPayloadException.cs" />
     <Compile Include="Communication\Handlers\Incoming\RequestAuthenticateHandler.cs" />
+    <Compile Include="Communication\Handlers\Outgoing\AuthenticationFailedHandler.cs" />
+    <Compile Include="Communication\Handlers\Outgoing\AuthenticationOKHandler.cs" />
     <Compile Include="Communication\Handlers\Outgoing\OutgoingMessage.cs" />
     <Compile Include="Communication\Handlers\Outgoing\ShalomHandler.cs" />
     <Compile Include="Communication\Utils\MessageStructure.cs" />
@@ -117,6 +121,7 @@
     <Compile Include="Database\Adapters\QueryReactor.cs" />
     <Compile Include="Database\DatabaseClient.cs" />
     <Compile Include="Database\DatabaseManager.cs" />
+    <Compile Include="Database\MalformedDataException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,5 +1,7 @@
-﻿using ChitterServer.Communication;
+﻿using ChitterServer.Chat;
+using ChitterServer.Communication;
 using ChitterServer.Database;
+using ChitterServer.Database.Adapters;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -13,11 +15,12 @@ namespace ChitterServer {
 
         private static CommunicationManager _CommunicationManager;
         private static DatabaseManager _DatabaseManager;
+        private static ChatManager _ChatManager;
 
         internal static void Initialise() {
             ConsoleColor console_current_colour = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.BackgroundColor = ConsoleColor.White;
+            //Console.BackgroundColor = ConsoleColor.White;
             Console.Clear();
             Console.WriteLine( @"  _______ _   _______      _______         " );
             Console.WriteLine( @" |__   __(_) |__   __|    |__   __|        " );
@@ -30,16 +33,18 @@ namespace ChitterServer {
 
             _CommunicationManager = new CommunicationManager( "0.0.0.0", 1232 );
             _DatabaseManager = new DatabaseManager( "./chitter.db" );
+            _ChatManager = new ChatManager();
+
+            using( QueryReactor reactor = _DatabaseManager.CreateQueryReactor() ) {
+                reactor.Query = "SELECT 1+1 AS `value`";
+                Console.WriteLine( reactor.Row[ "value" ] );
+            }
 
             _Log.Info( "TicTacToe Server has initialised successfully!\n" );
         }
 
-        internal static CommunicationManager CommunicationManager {
-            get => _CommunicationManager;
-        }
-
-        internal static DatabaseManager DatabaseManager {
-            get => _DatabaseManager;
-        }
+        internal static CommunicationManager CommunicationManager { get => _CommunicationManager; }
+        internal static DatabaseManager DatabaseManager { get => _DatabaseManager; }
+        internal static ChatManager ChatManager { get => _ChatManager; }
     }
 }

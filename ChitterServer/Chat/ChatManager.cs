@@ -12,5 +12,7 @@ namespace ChitterServer.Chat {
         internal ChatManager() {
             this._ChatUserManager = new ChatUserManager();
         }
+
+        internal ChatUserManager ChatUserManager { get => this._ChatUserManager; }
     }
 }
