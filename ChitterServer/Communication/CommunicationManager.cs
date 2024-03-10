@@ -53,7 +53,7 @@ namespace ChitterServer.Communication {
 
                     CommunicationClient communication_client = new CommunicationClient( socket );
 
-                    communication_client.Send( new ShalomHandler("nig") );
+                    communication_client.Send( new ShalomHandler( "nig" ) );
                 };
 
                 socket.OnClose = () => {
@@ -61,7 +61,7 @@ namespace ChitterServer.Communication {
                         _Log.Info( $"Connection closed -> {socket.ConnectionInfo.ClientIpAddress}" );
                         CommunicationClient communication_client = _CommunicationClientManager.GetCommunicationClient( socket );
                         communication_client.Dispose();
-                    } catch ( Exception ex ) {
+                    } catch( Exception ex ) {
                         _Log.Warn( $"Exception thrown whilst trying to close socket -> {ex.Message}" );
                         // i don't actually think this matters in most cases.
                     }
@@ -71,7 +71,7 @@ namespace ChitterServer.Communication {
                     CommunicationClient communication_client;
                     try {
                         communication_client = _CommunicationClientManager.GetCommunicationClient( socket );
-                    } catch (CommunicationClientNotFoundException ex) {
+                    } catch( CommunicationClientNotFoundException ex ) {
                         _Log.Error( $"Failed to handle incoming message -> {ex.Message}" );
 
                         socket.Close();
@@ -95,7 +95,7 @@ namespace ChitterServer.Communication {
                         IIncomingMessageHandler message_handler = this._IncomingMessageMAnager.GetMessageHandler( payload.Message );
 
                         message_handler.Handle( communication_client, payload );
-                    } catch ( Exception ex ) {
+                    } catch( Exception ex ) {
                         _Log.Error( $"Failed to handle incoming message -> {ex.Message}" );
 
                         communication_client.Dispose();
@@ -106,9 +106,11 @@ namespace ChitterServer.Communication {
 
                 };
             } );
+
+            _Log.Info( "CommunicationManager -> INITIALISED!" );
         }
 
-        internal static void LogOutboundMessage(string display_name, string json_msg) { 
+        internal static void LogOutboundMessage( string display_name, string json_msg ) {
             if( String.IsNullOrWhiteSpace( display_name ) )
                 throw new ArgumentNullException( "display_name" );
 

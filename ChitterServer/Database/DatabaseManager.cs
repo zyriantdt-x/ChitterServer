@@ -14,6 +14,8 @@ namespace ChitterServer.Database {
 
         internal DatabaseManager( string file_name ) {
             this._FileName = file_name;
+
+            _Log.Info( "DatabaseManager -> INITIALISED!" );
         }
 
         internal QueryReactor CreateQueryReactor() {
