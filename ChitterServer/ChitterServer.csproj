@@ -97,6 +97,9 @@
   <ItemGroup>
     <Compile Include="Chat\Channels\Channel.cs" />
     <Compile Include="Chat\Channels\ChannelManager.cs" />
+    <Compile Include="Chat\Channels\ChannelPrivileges.cs" />
+    <Compile Include="Chat\Channels\ChannelUser.cs" />
+    <Compile Include="Chat\Channels\ChannelUserNotFoundException.cs" />
     <Compile Include="Chat\ChatManager.cs" />
     <Compile Include="Chat\Users\ChatUser.cs" />
     <Compile Include="Chat\Users\ChatUserManager.cs" />

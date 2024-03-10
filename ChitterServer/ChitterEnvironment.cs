@@ -20,27 +20,28 @@ namespace ChitterServer {
         internal static void Initialise() {
             ConsoleColor console_current_colour = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            //Console.BackgroundColor = ConsoleColor.White;
-            Console.Clear();
-            Console.WriteLine( @"  _______ _   _______      _______         " );
-            Console.WriteLine( @" |__   __(_) |__   __|    |__   __|        " );
-            Console.WriteLine( @"    | |   _  ___| | __ _  ___| | ___   ___ " );
-            Console.WriteLine( @"    | |  | |/ __| |/ _` |/ __| |/ _ \ / _ \" );
-            Console.WriteLine( @"    | |  | | (__| | (_| | (__| | (_) |  __/" );
-            Console.WriteLine( @"    |_|  |_|\___|_|\__,_|\___|_|\___/ \___|" );
-            Console.WriteLine( "\n > Chitter Server by Ellis <\n\n" );
+
+            string[] title = {
+                @"   ___ _    _ _   _           ",
+                @"  / __| |_ (_) |_| |_ ___ _ _ ",
+                @" | (__| ' \| |  _|  _/ -_) '_|",
+                @"  \___|_||_|_|\__|\__\___|_|  ",
+                @"",
+                @"      > Chitter Server <      ",
+                @""
+            };
+
+            foreach(string line in title) {
+                Console.WriteLine( line );
+            }
+
             Console.ForegroundColor = console_current_colour;
 
             _CommunicationManager = new CommunicationManager( "0.0.0.0", 1232 );
             _DatabaseManager = new DatabaseManager( "./chitter.db" );
             _ChatManager = new ChatManager();
 
-            using( QueryReactor reactor = _DatabaseManager.CreateQueryReactor() ) {
-                reactor.Query = "SELECT 1+1 AS `value`";
-                Console.WriteLine( reactor.Row[ "value" ] );
-            }
-
-            _Log.Info( "TicTacToe Server has initialised successfully!\n" );
+            _Log.Info( "Chitter Server has initialised successfully!\n" );
         }
 
         internal static CommunicationManager CommunicationManager { get => _CommunicationManager; }
