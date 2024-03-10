@@ -99,6 +99,8 @@
     <Compile Include="Communication\Handlers\Outgoing\OutgoingMessage.cs" />
     <Compile Include="Communication\Handlers\Outgoing\ShalomHandler.cs" />
     <Compile Include="Communication\Utils\MessageStructure.cs" />
+    <Compile Include="Database\Adapters\NoDataException.cs" />
+    <Compile Include="Database\Adapters\QueryReactor.cs" />
     <Compile Include="Database\DatabaseClient.cs" />
     <Compile Include="Database\DatabaseManager.cs" />
     <Compile Include="Program.cs" />
