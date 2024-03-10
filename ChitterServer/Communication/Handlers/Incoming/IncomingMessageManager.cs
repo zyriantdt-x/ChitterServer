@@ -15,11 +15,12 @@ namespace ChitterServer.Communication.Handlers.Incoming {
             this._IncomingMessageHandlers = new List<IIncomingMessageHandler>();
             this.RegisterMessageHandlers();
 
-            _Log.Info( $"IncomingMessageManager ({this._IncomingMessageHandlers.Count}) -> INITIALISED!" );
+            _Log.Info( $"IncomingMessageManager ({this._IncomingMessageHandlers.Count} messages) -> INITIALISED!" );
         }
 
         private void RegisterMessageHandlers() {
             this.RegisterMessageHandler( new RequestAuthenticateHandler() );
+            this.RegisterMessageHandler( new JoinChannelHandler() );
         }
 
         private void RegisterMessageHandler( IIncomingMessageHandler incoming_message_handler ) {

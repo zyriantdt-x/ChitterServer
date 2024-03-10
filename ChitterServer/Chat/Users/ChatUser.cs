@@ -1,5 +1,6 @@
 ﻿using ChitterServer.Chat.Channels;
 using ChitterServer.Communication.Clients;
+using ChitterServer.Communication.Handlers.Outgoing;
 using ChitterServer.Database;
 using ChitterServer.Database.Adapters;
 using System;
@@ -78,6 +79,8 @@ namespace ChitterServer.Chat.Users {
             }
 
             this._ActiveChannel = channel;
+
+            this._CommunicationClient.Send( new ChatMessageHandler( DateTime.Now, "SERVER", $"Welcome to {channel.DisplayName}!" ) );
         }
 
         public void Dispose() {

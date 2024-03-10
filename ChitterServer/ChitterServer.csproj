@@ -97,6 +97,7 @@
   <ItemGroup>
     <Compile Include="Chat\Channels\Channel.cs" />
     <Compile Include="Chat\Channels\ChannelManager.cs" />
+    <Compile Include="Chat\Channels\ChannelNotFoundException.cs" />
     <Compile Include="Chat\Channels\ChannelPrivileges.cs" />
     <Compile Include="Chat\Channels\ChannelUser.cs" />
     <Compile Include="Chat\Channels\ChannelUserNotFoundException.cs" />
@@ -113,10 +114,13 @@
     <Compile Include="Communication\Handlers\Incoming\IIncomingMessageHandler.cs" />
     <Compile Include="Communication\Handlers\Incoming\IncomingEventNotFoundException.cs" />
     <Compile Include="Communication\Handlers\Incoming\IncomingMessageManager.cs" />
+    <Compile Include="Communication\Handlers\Incoming\JoinChannelHandler.cs" />
     <Compile Include="Communication\Handlers\Incoming\MalformedPayloadException.cs" />
     <Compile Include="Communication\Handlers\Incoming\RequestAuthenticateHandler.cs" />
     <Compile Include="Communication\Handlers\Outgoing\AuthenticationFailedHandler.cs" />
     <Compile Include="Communication\Handlers\Outgoing\AuthenticationOKHandler.cs" />
+    <Compile Include="Communication\Handlers\Outgoing\ChatMessageHandler.cs" />
+    <Compile Include="Communication\Handlers\Outgoing\GenericErrorHandler.cs" />
     <Compile Include="Communication\Handlers\Outgoing\OutgoingMessage.cs" />
     <Compile Include="Communication\Handlers\Outgoing\ShalomHandler.cs" />
     <Compile Include="Communication\Utils\MessageStructure.cs" />
