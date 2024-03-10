@@ -98,6 +98,8 @@ namespace ChitterServer.Communication {
                     } catch( Exception ex ) {
                         _Log.Error( $"Failed to handle incoming message -> {ex.Message}" );
 
+                        communication_client.Send( new GenericErrorHandler( ex.GetType().Name, ex.Message ) );
+
                         communication_client.Dispose();
                     }
                 };
