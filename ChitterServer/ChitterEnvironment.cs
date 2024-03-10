@@ -1,4 +1,5 @@
 ﻿using ChitterServer.Communication;
+using ChitterServer.Database;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace ChitterServer {
         private static readonly ILog _Log = LogManager.GetLogger( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType );
 
         private static CommunicationManager _CommunicationManager;
+        private static DatabaseManager _DatabaseManager;
 
         internal static void Initialise() {
             ConsoleColor console_current_colour = Console.ForegroundColor;
@@ -27,12 +29,17 @@ namespace ChitterServer {
             Console.ForegroundColor = console_current_colour;
 
             _CommunicationManager = new CommunicationManager( "0.0.0.0", 1232 );
+            _DatabaseManager = new DatabaseManager( "./chitter.db" );
 
             _Log.Info( "TicTacToe Server has initialised successfully!\n" );
         }
 
         internal static CommunicationManager CommunicationManager {
             get => _CommunicationManager;
+        }
+
+        internal static DatabaseManager DatabaseManager {
+            get => _DatabaseManager;
         }
     }
 }
