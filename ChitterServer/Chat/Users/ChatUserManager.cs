@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace ChitterServer.Chat.Users {
     internal class ChatUserManager {
+        private static readonly ILog _Log = LogManager.GetLogger( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType );
+
         private List<ChatUser> _ChatUsers;
 
         internal ChatUserManager() {
@@ -32,5 +35,7 @@ namespace ChitterServer.Chat.Users {
 
             throw new NotImplementedException();
         }
+
+        internal static ILog Log { get => _Log; }
     }
 }
