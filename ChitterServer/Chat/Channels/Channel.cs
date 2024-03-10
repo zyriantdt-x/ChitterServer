@@ -88,5 +88,8 @@ namespace ChitterServer.Chat.Channels {
 
             this.RegisterChannelUser( channel_user );
         }
+
+        internal string Uuid { get => this._Uuid; }
+        internal string DisplayName { get => this._DisplayName; }
     }
 }
