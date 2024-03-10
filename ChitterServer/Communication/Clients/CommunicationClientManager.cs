@@ -1,4 +1,5 @@
 ﻿using Fleck;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,14 @@ using System.Threading.Tasks;
 
 namespace ChitterServer.Communication.Clients {
     internal class CommunicationClientManager {
+        private static readonly ILog _Log = LogManager.GetLogger( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType );
+
         private List<CommunicationClient> _CommunicationClients;
 
         internal CommunicationClientManager() {
             this._CommunicationClients = new List<CommunicationClient>();
+
+            _Log.Info( "CommunicationClientManager -> INITIALISED!" );
         }
 
         public CommunicationClient GetCommunicationClient( string uuid ) {

@@ -1,4 +1,5 @@
-﻿using ChitterServer.Communication.Clients;
+﻿using ChitterServer.Chat.Channels;
+using ChitterServer.Communication.Clients;
 using ChitterServer.Database;
 using ChitterServer.Database.Adapters;
 using System;
@@ -15,6 +16,8 @@ namespace ChitterServer.Chat.Users {
 
         private CommunicationClient _CommunicationClient;
 
+        private Channel _ActiveChannel;
+
         internal ChatUser( CommunicationClient communcation_client, DataRow user_data ) {
             if( communcation_client == null )
                 throw new ArgumentNullException( "communication_client" );
@@ -30,6 +33,8 @@ namespace ChitterServer.Chat.Users {
             if( user_data[ "username" ] == null )
                 throw new MalformedDataException( "username" );
             this._Username = Convert.ToString( user_data[ "username" ] );
+
+            // set active channel to default
 
             ChitterEnvironment.ChatManager.ChatUserManager.RegisterChatUser( this );
         }
@@ -62,6 +67,19 @@ namespace ChitterServer.Chat.Users {
             return new ChatUser( communication_client, user_data );
         }
 
+        internal void JoinChannel( Channel channel ) {
+            if( channel == null )
+                throw new ArgumentNullException( "channel" );
+
+            try {
+                channel.Join( this );
+            } catch( Exception ) {
+                throw; // exception is already logged in Channel.cs - let's handle this upstream.
+            }
+
+            this._ActiveChannel = channel;
+        }
+
         public void Dispose() {
             ChitterEnvironment.ChatManager.ChatUserManager.DeregisterChatUser( this );
         }
@@ -70,5 +88,7 @@ namespace ChitterServer.Chat.Users {
         internal string Username { get => this._Username; }
 
         internal CommunicationClient CommunicationClient { get => this._CommunicationClient; }
+
+        internal Channel ActiveChannel { get => this._ActiveChannel; }
     }
 }

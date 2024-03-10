@@ -13,6 +13,8 @@ namespace ChitterServer.Chat.Users {
 
         internal ChatUserManager() {
             this._ChatUsers = new List<ChatUser>();
+
+            _Log.Info( "ChatUserManager -> INITIALISED!" );
         }
 
         internal void RegisterChatUser( ChatUser chat_user ) {
