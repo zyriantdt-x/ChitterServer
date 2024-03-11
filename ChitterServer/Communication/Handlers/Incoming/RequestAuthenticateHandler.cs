@@ -44,7 +44,6 @@ namespace ChitterServer.Communication.Handlers.Incoming {
             }
 
             // auth OK
-            ChitterEnvironment.ChatManager.ChatUserManager.RegisterChatUser( chat_user );
             communication_client.Authenticate( chat_user );
             communication_client.Send( new AuthenticationOKHandler( chat_user ) );
         }
