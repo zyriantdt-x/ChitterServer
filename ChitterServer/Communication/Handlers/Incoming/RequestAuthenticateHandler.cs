@@ -38,9 +38,6 @@ namespace ChitterServer.Communication.Handlers.Incoming {
             } catch( UserNotFoundException ) {
                 communication_client.Send( new AuthenticationFailedHandler() );
                 return;
-            } catch( Exception ex ) {
-                // a worse exception
-                return;
             }
 
             // auth OK
