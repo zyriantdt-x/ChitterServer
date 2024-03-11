@@ -17,7 +17,12 @@ namespace ChitterServer {
             // initialise the environment
             ChitterEnvironment.Initialise();
 
-            for( ; ; ) { }
+            while( true ) {
+                if( Console.ReadKey( true ).Key == ConsoleKey.Enter ) {
+                    Console.Write( "TTT > " );
+                    ChitterEnvironment.ConsoleCommandsManager.HandleConsoleInput( Console.ReadLine() );
+                }
+            }
         }
     }
 }

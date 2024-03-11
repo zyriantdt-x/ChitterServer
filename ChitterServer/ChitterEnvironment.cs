@@ -41,6 +41,8 @@ namespace ChitterServer {
 
             Console.ForegroundColor = console_current_colour;
 
+            Console.Title = "Chitter";
+
             _DatabaseManager = new DatabaseManager();
             _SettingsManager = new SettingsManager();
             _CommunicationManager = new CommunicationManager();

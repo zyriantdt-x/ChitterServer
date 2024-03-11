@@ -13,6 +13,7 @@ namespace ChitterServer.Utils.ConsoleCommands {
 
         internal ConsoleCommandsManager() {
             this._ConsoleCommands = new List<IConsoleCommand>();
+            this.RegisterConsoleCommands();
         }
 
         private void RegisterConsoleCommands() {
@@ -38,7 +39,7 @@ namespace ChitterServer.Utils.ConsoleCommands {
             return command;
         }
 
-        private void HandleConsoleInput( string input ) {
+        internal void HandleConsoleInput( string input ) {
             if( string.IsNullOrWhiteSpace( input ) )
                 return; // we don't need to do anything with this... or even throw an exception which is nice!
 
