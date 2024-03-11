@@ -72,18 +72,16 @@ namespace ChitterServer.Chat.Users {
             if( channel == null )
                 throw new ArgumentNullException( "channel" );
 
-            try {
-                channel.Join( this );
-            } catch( Exception ) {
-                throw; // exception is already logged in Channel.cs - let's handle this upstream.
-            }
+            this._ActiveChannel.Leave( this );
 
+            channel.Join( this );
             this._ActiveChannel = channel;
 
             this._CommunicationClient.Send( new ChatMessageHandler( DateTime.Now, "SERVER", $"Welcome to {channel.DisplayName}!" ) );
         }
 
         public void Dispose() {
+            this._ActiveChannel.Leave( this );
             ChitterEnvironment.ChatManager.ChatUserManager.DeregisterChatUser( this );
         }
 

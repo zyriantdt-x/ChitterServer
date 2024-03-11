@@ -1,4 +1,5 @@
 ﻿using ChitterServer.Chat.Users;
+using ChitterServer.Communication.Handlers.Outgoing;
 using ChitterServer.Database;
 using ChitterServer.Database.Adapters;
 using System;
@@ -70,6 +71,13 @@ namespace ChitterServer.Chat.Channels {
             this._ActiveUsers.Add( channel_user );
         }
 
+        private void DeregisterChannelUser( ChannelUser channel_user ) {
+            if( channel_user == null )
+                throw new ArgumentNullException( "channel_user" );
+
+            this._ActiveUsers.Remove( channel_user ); // maybe we should check for false here?
+        }
+
         internal void Join( ChatUser chat_user ) {
             if( chat_user == null )
                 throw new ArgumentException( "chat_user" );
@@ -87,6 +95,22 @@ namespace ChitterServer.Chat.Channels {
             }
 
             this.RegisterChannelUser( channel_user );
+        }
+
+        internal void Leave( ChatUser chat_user ) {
+            if( chat_user == null )
+                throw new ArgumentNullException( "chat_user" );
+
+            // get channel user
+            ChannelUser channel_user;
+            try {
+                channel_user = this.GetChannelUser( chat_user );
+            } catch( Exception ex ) {
+                ChannelManager.Log.Warn( $"Failed to leave channel -> {ex.Message}" );
+                throw; // let's expect this to be handled upstream
+            }
+
+            this.DeregisterChannelUser( channel_user );
         }
 
         internal string Uuid { get => this._Uuid; }
