@@ -35,7 +35,8 @@ namespace ChitterServer.Chat.Users {
                 throw new MalformedDataException( "username" );
             this._Username = Convert.ToString( user_data[ "username" ] );
 
-            // set active channel to default
+            Channel channel = ChitterEnvironment.ChatManager.ChannelManager.GetChannel( ChitterEnvironment.SettingsManager.GetSetting( "default_channel_uuid" ) );
+            this.JoinChannel( channel );
 
             ChitterEnvironment.ChatManager.ChatUserManager.RegisterChatUser( this );
         }
@@ -72,7 +73,8 @@ namespace ChitterServer.Chat.Users {
             if( channel == null )
                 throw new ArgumentNullException( "channel" );
 
-            this._ActiveChannel.Leave( this );
+            if( this._ActiveChannel != null ) // i've tried to avoid "null", but this will be null by default...
+                this._ActiveChannel.Leave( this );
 
             channel.Join( this );
             this._ActiveChannel = channel;
