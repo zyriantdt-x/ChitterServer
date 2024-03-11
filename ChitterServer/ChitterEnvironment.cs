@@ -2,6 +2,7 @@
 using ChitterServer.Communication;
 using ChitterServer.Database;
 using ChitterServer.Database.Adapters;
+using ChitterServer.Utils.ConsoleCommands;
 using ChitterServer.Utils.Settings;
 using log4net;
 using System;
@@ -18,6 +19,7 @@ namespace ChitterServer {
         private static DatabaseManager _DatabaseManager;
         private static ChatManager _ChatManager;
         private static SettingsManager _SettingsManager;
+        private static ConsoleCommandsManager _ConsoleCommandsManager;
 
         internal static void Initialise() {
             ConsoleColor console_current_colour = Console.ForegroundColor;
@@ -43,6 +45,7 @@ namespace ChitterServer {
             _SettingsManager = new SettingsManager();
             _CommunicationManager = new CommunicationManager();
             _ChatManager = new ChatManager();
+            _ConsoleCommandsManager = new ConsoleCommandsManager();
 
             _Log.Info( "Chitter Server has initialised successfully!\n" );
         }
@@ -51,5 +54,6 @@ namespace ChitterServer {
         internal static DatabaseManager DatabaseManager { get => _DatabaseManager; }
         internal static ChatManager ChatManager { get => _ChatManager; }
         internal static SettingsManager SettingsManager { get => _SettingsManager; }
+        internal static ConsoleCommandsManager ConsoleCommandsManager { get => _ConsoleCommandsManager; }
     }
 }
