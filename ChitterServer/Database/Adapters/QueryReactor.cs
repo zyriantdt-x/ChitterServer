@@ -67,6 +67,8 @@ namespace ChitterServer.Database.Adapters {
                         row = data_table.Rows[ 0 ];
                     else
                         throw new NoDataException( this._SQLiteCommand.CommandText );
+                } catch( NoDataException ) {
+                    throw; // this probably isn't game breaking - let's let the caller deal with this.
                 } catch (Exception ex) {
                     DatabaseManager.Log.Error( $"Unable to get row -> {ex.Message}" );
 
