@@ -21,6 +21,7 @@ namespace ChitterServer.Communication.Handlers.Incoming {
         private void RegisterMessageHandlers() {
             this.RegisterMessageHandler( new RequestAuthenticateHandler() );
             this.RegisterMessageHandler( new JoinChannelHandler() );
+            this.RegisterMessageHandler( new IncomingChatMessageHandler() );
         }
 
         private void RegisterMessageHandler( IIncomingMessageHandler incoming_message_handler ) {

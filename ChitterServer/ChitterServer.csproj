@@ -111,6 +111,7 @@
     <Compile Include="Communication\Clients\CommunicationClient.cs" />
     <Compile Include="Communication\Clients\CommunicationClientManager.cs" />
     <Compile Include="Communication\CommunicationManager.cs" />
+    <Compile Include="Communication\Handlers\Incoming\IncomingChatMessageHandler.cs" />
     <Compile Include="Communication\Handlers\Incoming\IIncomingMessageHandler.cs" />
     <Compile Include="Communication\Handlers\Incoming\IncomingEventNotFoundException.cs" />
     <Compile Include="Communication\Handlers\Incoming\IncomingMessageManager.cs" />
