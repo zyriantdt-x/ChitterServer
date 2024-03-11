@@ -34,6 +34,22 @@ namespace ChitterServer.Chat.Channels {
         private void CreateChannelUser( ChatUser chat_user ) {
             if( chat_user == null )
                 throw new ArgumentException( "chat_user" );
+
+            using( QueryReactor reactor = ChitterEnvironment.DatabaseManager.CreateQueryReactor() ) {
+                reactor.Query = "INSERT INTO `channel_users` (`channel_uuid`,`user_uuid`,`privilege_level`) VALUES" +
+                    "(@channel_uuid, @user_uuid, @privilege_level)";
+                reactor.AddParameter( "channel_uuid", this._Uuid );
+                reactor.AddParameter( "user_uuid", chat_user.Uuid );
+                reactor.AddParameter( "privilege_level", ( int )ChannelPrivileges.BASIC );
+
+                try {
+                    reactor.RunQuery();
+                } catch( Exception ex ) {
+                    ChannelManager.Log.Error( $"Failed to create channel_users record -> {ex.Message}" );
+                    throw; // let's expect this to be handled upstream
+                }
+
+            }
         }
 
         // maybe we need to differentiate between active channel users and db-stored channel users?
