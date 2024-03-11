@@ -36,6 +36,8 @@ namespace ChitterServer.Chat.Channels {
                 throw new ArgumentException( "chat_user" );
         }
 
+        // maybe we need to differentiate between active channel users and db-stored channel users?
+
         internal ChannelUser GetChannelUser( ChatUser chat_user ) {
             if( chat_user == null )
                 throw new ArgumentException( "chat_user" );
@@ -111,6 +113,15 @@ namespace ChitterServer.Chat.Channels {
             }
 
             this.DeregisterChannelUser( channel_user );
+        }
+
+        internal void Broadcast( OutgoingMessage message ) {
+            if( message == null )
+                throw new ArgumentNullException( "message" );
+
+            foreach( ChannelUser channel_user in this._ActiveUsers ) {
+                channel_user.ChatUser.CommunicationClient.Send( message );
+            }
         }
 
         internal string Uuid { get => this._Uuid; }
