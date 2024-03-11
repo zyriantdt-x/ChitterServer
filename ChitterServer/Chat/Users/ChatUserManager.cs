@@ -38,6 +38,8 @@ namespace ChitterServer.Chat.Users {
             throw new NotImplementedException();
         }
 
+        internal List<ChatUser> ChatUsers { get => this._ChatUsers; } // i really don't like this, but i need it for console commands
+
         internal static ILog Log { get => _Log; }
     }
 }

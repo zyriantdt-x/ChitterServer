@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChitterServer.Chat.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,9 @@ namespace ChitterServer.Utils.ConsoleCommands {
         public string Identifier => "chatusers";
 
         public void Handle( string[] argv ) {
-            throw new NotImplementedException();
+            foreach( ChatUser chat_user in ChitterEnvironment.ChatManager.ChatUserManager.ChatUsers ) {
+                Console.WriteLine( $"{chat_user.Uuid} | {chat_user.Username} | {chat_user.ActiveChannel.DisplayName} ({chat_user.ActiveChannel.Uuid})" );
+            }
         }
     }
 }
