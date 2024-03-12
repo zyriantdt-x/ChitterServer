@@ -18,6 +18,7 @@ namespace ChitterServer.Utils.ConsoleCommands {
 
         private void RegisterConsoleCommands() {
             this.RegisterConsoleCommand( new ChatUsersConsoleCommand() );
+            this.RegisterConsoleCommand( new ChannelsConsoleCommand() );
         }
 
         private void RegisterConsoleCommand( IConsoleCommand console_command ) {

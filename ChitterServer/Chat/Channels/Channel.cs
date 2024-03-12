@@ -140,5 +140,6 @@ namespace ChitterServer.Chat.Channels {
 
         internal string Uuid { get => this._Uuid; }
         internal string DisplayName { get => this._DisplayName; }
+        internal List<ChannelUser> ActiveUsers { get => this._ActiveUsers; }
     }
 }

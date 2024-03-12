@@ -66,5 +66,7 @@ namespace ChitterServer.Chat.Channels {
         }
 
         internal static ILog Log { get => _Log; }
+
+        internal List<Channel> Channels { get => this._Channels; }
     }
 }
