@@ -79,17 +79,17 @@ namespace ChitterServer.Chat.Channels {
                 }
             }
 
-            return new ChannelUser( chat_user, channel_user_row );
+            return new ChannelUser( chat_user, this, channel_user_row );
         }
 
-        private void RegisterChannelUser( ChannelUser channel_user ) {
+        internal void RegisterChannelUser( ChannelUser channel_user ) {
             if( channel_user == null )
                 throw new ArgumentNullException( "channel_user" );
 
             this._ActiveUsers.Add( channel_user );
         }
 
-        private void DeregisterChannelUser( ChannelUser channel_user ) {
+        internal void DeregisterChannelUser( ChannelUser channel_user ) {
             if( channel_user == null )
                 throw new ArgumentNullException( "channel_user" );
 
@@ -103,7 +103,7 @@ namespace ChitterServer.Chat.Channels {
             // get channel user
             ChannelUser channel_user;
             try {
-                channel_user = this.GetChannelUser( chat_user );
+                channel_user = this.GetChannelUser( chat_user ); // yeah i wanna rename this
             } catch( ChannelUserNotFoundException ) {
                 this.CreateChannelUser( chat_user );
                 channel_user = this.GetChannelUser( chat_user ); // let's just hope this doesn't throw!
@@ -111,8 +111,6 @@ namespace ChitterServer.Chat.Channels {
                 ChannelManager.Log.Error( $"Failed to join channel -> {ex.Message}", ex );
                 throw; // let's expect this to be handled upstream
             }
-
-            this.RegisterChannelUser( channel_user );
         }
 
         internal void Leave( ChatUser chat_user ) {
@@ -128,7 +126,7 @@ namespace ChitterServer.Chat.Channels {
                 throw; // let's expect this to be handled upstream
             }
 
-            this.DeregisterChannelUser( channel_user );
+            channel_user.Dispose();
         }
 
         internal void Broadcast( OutgoingMessage message ) {

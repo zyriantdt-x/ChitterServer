@@ -28,7 +28,6 @@ namespace ChitterServer.Chat.Channels {
 
             using( QueryReactor reactor = ChitterEnvironment.DatabaseManager.CreateQueryReactor() ) {
                 reactor.Query = "SELECT * FROM `channels`";
-                //"INNER JOIN `channel_privileges` ON `channel`.`uuid` = `channel_privileges`.`channel_uuid`";
 
                 try {
                     channels_table = reactor.Table;
@@ -44,11 +43,11 @@ namespace ChitterServer.Chat.Channels {
 
             // register each channel
             foreach( DataRow channel_row in channels_table.Rows ) {
-                this.RegisterChannel( new Channel( channel_row ) );
+                this.RegisterChannel(new Channel( channel_row ));
             }
         }
 
-        private void RegisterChannel( Channel channel ) {
+        internal void RegisterChannel( Channel channel ) {
             if( channel == null )
                 throw new ArgumentNullException( "channel" );
 
