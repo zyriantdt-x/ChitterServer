@@ -23,7 +23,9 @@ namespace ChitterServer {
 
         internal static void Initialise() {
             ConsoleColor console_current_colour = Console.ForegroundColor;
+            Console.BackgroundColor = ConsoleColor.White;
             Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Clear();
 
             string[] title = {
                 @"   ___ _    _ _   _           ",

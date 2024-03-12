@@ -66,7 +66,7 @@ namespace ChitterServer.Communication {
                         CommunicationClient communication_client = _CommunicationClientManager.GetCommunicationClient( socket );
                         communication_client.Dispose();
                     } catch( Exception ex ) {
-                        _Log.Warn( $"Exception thrown whilst trying to close socket -> {ex.Message}" );
+                        _Log.Warn( $"Exception thrown whilst trying to close socket -> {ex.Message}", ex );
                         // i don't actually think this matters in most cases.
                     }
                 };
@@ -76,7 +76,7 @@ namespace ChitterServer.Communication {
                     try {
                         communication_client = _CommunicationClientManager.GetCommunicationClient( socket );
                     } catch( CommunicationClientNotFoundException ex ) {
-                        _Log.Error( $"Failed to handle incoming message -> {ex.Message}" );
+                        _Log.Error( $"Failed to handle incoming message -> {ex.Message}", ex );
 
                         socket.Close();
                         return;
@@ -84,7 +84,7 @@ namespace ChitterServer.Communication {
 
                     try {
                         string display_name = communication_client.IsAuthenticated ? communication_client.ChatUser.Username : communication_client.WebSocketConnection.ConnectionInfo.ClientIpAddress;
-                        _Log.Info( $"Message received from {display_name} -> {message}" );
+                        _Log.Debug( $"Message received from {display_name} -> {message}" );
 
                         MessageStructure payload = JsonConvert.DeserializeObject<MessageStructure>( message );
                         if( payload == null )
@@ -123,7 +123,7 @@ namespace ChitterServer.Communication {
             if( String.IsNullOrWhiteSpace( json_msg ) )
                 throw new ArgumentNullException( "json_msg" );
 
-            _Log.Info( $"Sent message to {display_name} -> {json_msg}" );
+            _Log.Debug( $"Sent message to {display_name} -> {json_msg}" );
         }
 
         internal CommunicationClientManager CommunicationClientManager { get => this._CommunicationClientManager; }
