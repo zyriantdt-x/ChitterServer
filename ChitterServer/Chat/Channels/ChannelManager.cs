@@ -33,10 +33,11 @@ namespace ChitterServer.Chat.Channels {
                 try {
                     channels_table = reactor.Table;
                 } catch( NoDataException ) {
-                    // non issue
+                    // this isn't gamebreaking - just means there's no channels...
+                    // maybe this is in the future?
                     return;
                 } catch( Exception ex ) {
-                    // idk yet
+                    _Log.Error( $"Unable to load channels from database -> {ex.Message}", ex );
                     return; 
                 }
             }

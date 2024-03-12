@@ -60,7 +60,7 @@ namespace ChitterServer.Chat.Users {
                 } catch( NoDataException ) {
                     throw new UserNotFoundException( username );
                 } catch( Exception ex ) {
-                    ChatUserManager.Log.Error( $"Unable to authenticate user -> {ex.Message}" );
+                    ChatUserManager.Log.Error( $"Unable to authenticate user -> {ex.Message}", ex );
 
                     throw;
                 }

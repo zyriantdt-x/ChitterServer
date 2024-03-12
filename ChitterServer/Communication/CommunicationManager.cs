@@ -126,22 +126,6 @@ namespace ChitterServer.Communication {
             _Log.Info( $"Sent message to {display_name} -> {json_msg}" );
         }
 
-        /* public string Location {
-            get {
-                string location;
-
-                using(QueryReactor reactor = ChitterEnvironment.DatabaseManager.CreateQueryReactor()) {
-                    reactor.Query = "SELECT `value` FROM `settings` WHERE `key` = @key";
-                    reactor.AddParameter( "key", WS_LOCATION_SETTING_KEY );
-
-                    try {
-                        DataRow row = reactor.Row;
-                        location = Convert.ToString( row[ "value" ] );
-                    }
-                }
-            }
-        }*/
-
         internal CommunicationClientManager CommunicationClientManager { get => this._CommunicationClientManager; }
     }
 }

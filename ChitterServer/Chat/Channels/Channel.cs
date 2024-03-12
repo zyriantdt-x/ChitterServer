@@ -45,7 +45,7 @@ namespace ChitterServer.Chat.Channels {
                 try {
                     reactor.RunQuery();
                 } catch( Exception ex ) {
-                    ChannelManager.Log.Error( $"Failed to create channel_users record -> {ex.Message}" );
+                    ChannelManager.Log.Error( $"Failed to create channel_users record -> {ex.Message}", ex );
                     throw; // let's expect this to be handled upstream
                 }
 
@@ -74,7 +74,7 @@ namespace ChitterServer.Chat.Channels {
                 } catch( NoDataException ) {
                     throw new ChannelUserNotFoundException();
                 } catch( Exception ex ) {
-                    ChannelManager.Log.Warn( $"Failed to load channel_users data -> {ex.Message}" );
+                    ChannelManager.Log.Error( $"Failed to load channel_users data -> {ex.Message}", ex );
                     throw; // let's expect this to be handled upstream
                 }
             }
@@ -108,7 +108,7 @@ namespace ChitterServer.Chat.Channels {
                 this.CreateChannelUser( chat_user );
                 channel_user = this.GetChannelUser( chat_user ); // let's just hope this doesn't throw!
             } catch( Exception ex ) {
-                ChannelManager.Log.Warn( $"Failed to join channel -> {ex.Message}" );
+                ChannelManager.Log.Error( $"Failed to join channel -> {ex.Message}", ex );
                 throw; // let's expect this to be handled upstream
             }
 
@@ -124,7 +124,7 @@ namespace ChitterServer.Chat.Channels {
             try {
                 channel_user = this.GetChannelUser( chat_user );
             } catch( Exception ex ) {
-                ChannelManager.Log.Warn( $"Failed to leave channel -> {ex.Message}" );
+                ChannelManager.Log.Warn( $"Failed to leave channel -> {ex.Message}", ex );
                 throw; // let's expect this to be handled upstream
             }
 
