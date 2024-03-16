@@ -17,23 +17,16 @@ namespace ChitterServer.Chat.Channels {
         private List<ChannelUser> _ActiveUsers;
 
         internal Channel( DataRow channel_data ) {
-            if( channel_data == null )
-                throw new ArgumentNullException( "channel_data" );
+            if( channel_data == null ) throw new ArgumentNullException( "channel_data" );
+
+            this._Uuid = channel_data[ "uuid" ] as string ?? throw new MalformedDataException( "uuid" );
+            this._DisplayName = channel_data[ "displayname" ] as string ?? throw new MalformedDataException( "displayname" );
 
             this._ActiveUsers = new List<ChannelUser>();
-
-            if( channel_data[ "uuid" ] == null )
-                throw new MalformedDataException( "uuid" );
-            this._Uuid = Convert.ToString( channel_data[ "uuid" ] );
-
-            if( channel_data[ "displayname" ] == null )
-                throw new MalformedDataException( "displayname" );
-            this._DisplayName = Convert.ToString( channel_data[ "displayname" ] );
         }
 
         private void CreateChannelUser( ChatUser chat_user ) {
-            if( chat_user == null )
-                throw new ArgumentException( "chat_user" );
+            if( chat_user == null ) throw new ArgumentException( "chat_user" );
 
             using( QueryReactor reactor = ChitterEnvironment.DatabaseManager.CreateQueryReactor() ) {
                 reactor.Query = "INSERT INTO `channel_users` (`channel_uuid`,`user_uuid`,`privilege_level`) VALUES" +
@@ -48,19 +41,16 @@ namespace ChitterServer.Chat.Channels {
                     ChannelManager.Log.Error( $"Failed to create channel_users record -> {ex.Message}", ex );
                     throw; // let's expect this to be handled upstream
                 }
-
             }
         }
 
         // maybe we need to differentiate between active channel users and db-stored channel users?
 
         internal ChannelUser GetChannelUser( ChatUser chat_user ) {
-            if( chat_user == null )
-                throw new ArgumentException( "chat_user" );
+            if( chat_user == null ) throw new ArgumentException( "chat_user" );
 
             ChannelUser channel_user = this._ActiveUsers.FirstOrDefault( x => x.ChatUser.Uuid == chat_user.Uuid );
-            if( channel_user != null )
-                return channel_user;
+            if( channel_user != null ) return channel_user;
 
             DataRow channel_user_row;
 
@@ -72,7 +62,7 @@ namespace ChitterServer.Chat.Channels {
                 try {
                     channel_user_row = reactor.Row;
                 } catch( NoDataException ) {
-                    throw new ChannelUserNotFoundException();
+                    throw new ChannelUserNotFoundException( chat_user.Uuid, this._Uuid );
                 } catch( Exception ex ) {
                     ChannelManager.Log.Error( $"Failed to load channel_users data -> {ex.Message}", ex );
                     throw; // let's expect this to be handled upstream
@@ -83,22 +73,19 @@ namespace ChitterServer.Chat.Channels {
         }
 
         internal void RegisterChannelUser( ChannelUser channel_user ) {
-            if( channel_user == null )
-                throw new ArgumentNullException( "channel_user" );
+            if( channel_user == null ) throw new ArgumentNullException( "channel_user" );
 
             this._ActiveUsers.Add( channel_user );
         }
 
         internal void DeregisterChannelUser( ChannelUser channel_user ) {
-            if( channel_user == null )
-                throw new ArgumentNullException( "channel_user" );
+            if( channel_user == null ) throw new ArgumentNullException( "channel_user" );
 
-            this._ActiveUsers.Remove( channel_user ); // maybe we should check for false here?
+            _ = this._ActiveUsers.Remove( channel_user ); // maybe we should check for false here?
         }
 
         internal void Join( ChatUser chat_user ) {
-            if( chat_user == null )
-                throw new ArgumentException( "chat_user" );
+            if( chat_user == null ) throw new ArgumentException( "chat_user" );
 
             // get channel user
             ChannelUser channel_user;
@@ -114,8 +101,7 @@ namespace ChitterServer.Chat.Channels {
         }
 
         internal void Leave( ChatUser chat_user ) {
-            if( chat_user == null )
-                throw new ArgumentNullException( "chat_user" );
+            if( chat_user == null ) throw new ArgumentNullException( "chat_user" );
 
             // get channel user
             ChannelUser channel_user;
@@ -130,16 +116,13 @@ namespace ChitterServer.Chat.Channels {
         }
 
         internal void Broadcast( OutgoingMessage message ) {
-            if( message == null )
-                throw new ArgumentNullException( "message" );
+            if( message == null ) throw new ArgumentNullException( "message" );
 
-            foreach( ChannelUser channel_user in this._ActiveUsers ) {
-                channel_user.ChatUser.CommunicationClient.Send( message );
-            }
+            foreach( ChannelUser channel_user in this._ActiveUsers ) channel_user.ChatUser.CommunicationClient.Send( message );
         }
 
-        internal string Uuid { get => this._Uuid; }
-        internal string DisplayName { get => this._DisplayName; }
-        internal List<ChannelUser> ActiveUsers { get => this._ActiveUsers; }
+        internal string Uuid => this._Uuid;
+        internal string DisplayName => this._DisplayName;
+        internal List<ChannelUser> ActiveUsers => this._ActiveUsers;
     }
 }

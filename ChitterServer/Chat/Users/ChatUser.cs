@@ -20,20 +20,12 @@ namespace ChitterServer.Chat.Users {
         private Channel _ActiveChannel;
 
         internal ChatUser( CommunicationClient communcation_client, DataRow user_data ) {
-            if( communcation_client == null )
-                throw new ArgumentNullException( "communication_client" );
-            this._CommunicationClient = communcation_client;
+            this._CommunicationClient = communcation_client ?? throw new ArgumentNullException( "communication_client" );
 
-            if( user_data == null )
-                throw new ArgumentNullException( "user_data" );
+            if( user_data == null ) throw new ArgumentNullException( "user_data" );
 
-            if( user_data[ "uuid" ] == null )
-                throw new MalformedDataException( "uuid" );
-            this._Uuid = Convert.ToString( user_data[ "uuid" ] );
-
-            if( user_data[ "username" ] == null )
-                throw new MalformedDataException( "username" );
-            this._Username = Convert.ToString( user_data[ "username" ] );
+            this._Uuid = user_data[ "uuid" ] as string ?? throw new MalformedDataException( "uuid" );
+            this._Username = user_data[ "username" ] as string ?? throw new MalformedDataException( "username" );
 
             Channel channel = ChitterEnvironment.ChatManager.ChannelManager.GetChannel( ChitterEnvironment.SettingsManager.GetSetting( "default_channel_uuid" ) );
             this.JoinChannel( channel );
@@ -42,11 +34,9 @@ namespace ChitterServer.Chat.Users {
         }
 
         internal static ChatUser TryAuthenticate( CommunicationClient communication_client, string username, string password ) {
-            if( String.IsNullOrWhiteSpace( username ) )
-                throw new ArgumentNullException( username );
+            if( String.IsNullOrWhiteSpace( username ) ) throw new ArgumentNullException( username );
 
-            if( String.IsNullOrWhiteSpace( password ) )
-                throw new ArgumentNullException( password );
+            if( String.IsNullOrWhiteSpace( password ) ) throw new ArgumentNullException( password );
 
             DataRow user_data;
 
@@ -70,11 +60,9 @@ namespace ChitterServer.Chat.Users {
         }
 
         internal void JoinChannel( Channel channel ) {
-            if( channel == null )
-                throw new ArgumentNullException( "channel" );
+            if( channel == null ) throw new ArgumentNullException( "channel" );
 
-            if( this._ActiveChannel != null ) // i've tried to avoid "null", but this will be null by default...
-                this._ActiveChannel.Leave( this );
+            if( this._ActiveChannel != null ) this._ActiveChannel.Leave( this ); // i've tried to avoid "null", but this will be null by default...
 
             channel.Join( this );
             this._ActiveChannel = channel;
@@ -87,11 +75,11 @@ namespace ChitterServer.Chat.Users {
             ChitterEnvironment.ChatManager.ChatUserManager.DeregisterChatUser( this );
         }
 
-        internal string Uuid { get => this._Uuid; }
-        internal string Username { get => this._Username; }
+        internal string Uuid => this._Uuid;
+        internal string Username => this._Username;
 
-        internal CommunicationClient CommunicationClient { get => this._CommunicationClient; }
+        internal CommunicationClient CommunicationClient => this._CommunicationClient;
 
-        internal Channel ActiveChannel { get => this._ActiveChannel; }
+        internal Channel ActiveChannel => this._ActiveChannel;
     }
 }

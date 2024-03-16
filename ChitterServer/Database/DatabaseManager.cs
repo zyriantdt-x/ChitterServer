@@ -36,6 +36,6 @@ namespace ChitterServer.Database {
             }
         }
 
-        internal static ILog Log { get => _Log; }
+        internal static ILog Log => _Log;
     }
 }

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace ChitterServer.Utils.ConsoleCommands {
     internal class ConsoleCommandNotFoundException : Exception {
-        internal ConsoleCommandNotFoundException( string identifier )
-            : base( $"Attempt to find non-existing ConsoleCommand '{identifier}'" ) { }
+        internal string Identifier { get; }
+        internal ConsoleCommandNotFoundException( string identifier ) {
+            this.Identifier = identifier;
+        }
     }
 }

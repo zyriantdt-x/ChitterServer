@@ -13,8 +13,7 @@ namespace ChitterServer.Communication.Handlers.Incoming {
         public string Identifier => "REQUEST_AUTHENTICATE";
 
         public void Handle( CommunicationClient communication_client, MessageStructure message ) {
-            if( communication_client.IsAuthenticated )
-                return; // icl lets just discard this
+            if( communication_client.IsAuthenticated ) return; // icl lets just discard this
 
             object username_as_obj;
             object password_as_obj;

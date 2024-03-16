@@ -102,6 +102,8 @@
     <Compile Include="Chat\Channels\ChannelUser.cs" />
     <Compile Include="Chat\Channels\ChannelUserNotFoundException.cs" />
     <Compile Include="Chat\ChatManager.cs" />
+    <Compile Include="Chat\Commands\ChatCommandsManager.cs" />
+    <Compile Include="Chat\Commands\IChatCommand.cs" />
     <Compile Include="Chat\Users\ChatUser.cs" />
     <Compile Include="Chat\Users\ChatUserManager.cs" />
     <Compile Include="Chat\Users\UserNotFoundException.cs" />

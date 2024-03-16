@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ChitterServer.Communication.Utils {
     internal class MessageStructure {
         [JsonProperty( "message" )]
-        internal string Message { get; set;  }
+        internal string Message { get; set; }
 
         [JsonProperty( "body" )]
         internal Dictionary<string, object> Body { get; set; }

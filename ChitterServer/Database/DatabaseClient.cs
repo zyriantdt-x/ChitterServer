@@ -37,13 +37,9 @@ namespace ChitterServer.Database {
                 this._Connection.Close();
         }
 
-        internal SQLiteCommand CreateSqliteCommand() {
-            return this._Connection.CreateCommand();
-        }
+        internal SQLiteCommand CreateSqliteCommand() => this._Connection.CreateCommand();
 
-        internal QueryReactor QueryReactor {
-            get => this._QueryReactor;
-        }
+        internal QueryReactor QueryReactor => this._QueryReactor;
 
         public void Dispose() {
             if( this._Connection.State == ConnectionState.Open )

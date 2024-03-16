@@ -12,25 +12,19 @@ namespace ChitterServer.Database.Adapters {
         private SQLiteCommand _SQLiteCommand;
 
         internal QueryReactor(DatabaseClient database_client) {
-            if( database_client == null )
-                throw new ArgumentNullException( "database_client" );
-
-            this._DatabaseClient = database_client;
+            this._DatabaseClient = database_client ?? throw new ArgumentNullException( "database_client" );
 
             this._SQLiteCommand = this._DatabaseClient.CreateSqliteCommand();
         }
 
         internal void AddParameter(string key, object value) {
-            if( String.IsNullOrWhiteSpace( key ) )
-                throw new ArgumentNullException( "key" );
+            if( String.IsNullOrWhiteSpace( key ) ) throw new ArgumentNullException( "key" );
 
-            if( value == null )
-                throw new ArgumentNullException( "value" );
+            if( value == null ) throw new ArgumentNullException( "value" );
 
             SQLiteParameter param_added = this._SQLiteCommand.Parameters.AddWithValue( key, value );
 
-            if( param_added == null )
-                throw new Exception( $"Unable to add SQLite parameter {key}" );
+            if( param_added == null ) throw new Exception( $"Unable to add SQLite parameter {key}" );
         }
 
         internal bool HasResults {
@@ -63,10 +57,7 @@ namespace ChitterServer.Database.Adapters {
                         data_table.Load( reader );
                     }
 
-                    if( data_table.Rows.Count > 0 )
-                        row = data_table.Rows[ 0 ];
-                    else
-                        throw new NoDataException( this._SQLiteCommand.CommandText );
+                    row = data_table.Rows.Count > 0 ? data_table.Rows[ 0 ] : throw new NoDataException( this._SQLiteCommand.CommandText );
                 } catch( NoDataException ) {
                     throw; // this probably isn't game breaking - let's let the caller deal with this.
                 } catch (Exception ex) {
@@ -90,8 +81,7 @@ namespace ChitterServer.Database.Adapters {
                         table.Load( reader );
                     }
 
-                    if( table.Rows.Count < 1 )
-                        throw new NoDataException( this._SQLiteCommand.CommandText );
+                    if( table.Rows.Count < 1 ) throw new NoDataException( this._SQLiteCommand.CommandText );
                 } catch (Exception ex) {
                     DatabaseManager.Log.Error( $"Unable to get table -> {ex.Message}" );
 
@@ -115,7 +105,7 @@ namespace ChitterServer.Database.Adapters {
 
         internal void RunQuery() {
             try {
-                this._SQLiteCommand.ExecuteNonQuery();
+                _ = this._SQLiteCommand.ExecuteNonQuery();
             } catch (Exception ex) {
                 DatabaseManager.Log.Error( $"Unable to run query -> {ex.Message}" );
 

@@ -17,8 +17,7 @@ namespace ChitterServer.Communication.Handlers.Incoming {
         public void Handle( CommunicationClient communication_client, MessageStructure message ) {
             object channel_uuid_as_obj;
 
-            if( !message.Body.TryGetValue( "uuid", out channel_uuid_as_obj ) )
-                throw new MalformedPayloadException( "body.uuid" );
+            if( !message.Body.TryGetValue( "uuid", out channel_uuid_as_obj ) ) throw new MalformedPayloadException( "body.uuid" );
 
             string channel_uuid = Convert.ToString( channel_uuid_as_obj );
 

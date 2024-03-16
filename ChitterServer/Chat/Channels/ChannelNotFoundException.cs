@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace ChitterServer.Chat.Channels {
     internal class ChannelNotFoundException : Exception {
-        internal ChannelNotFoundException( string uuid )
-            : base( $"Attempt to find non-existing channel with UUID {uuid}" ) { }
+        string Uuid { get; }
+
+        internal ChannelNotFoundException( string uuid ) {
+            this.Uuid = uuid;
+        }
     }
 }

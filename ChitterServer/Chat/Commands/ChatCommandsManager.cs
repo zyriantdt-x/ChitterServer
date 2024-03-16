@@ -24,8 +24,7 @@ namespace ChitterServer.Chat.Commands {
         }
 
         private void RegisterChatCommand( IChatCommand chat_command ) {
-            if( chat_command == null )
-                throw new ArgumentNullException( "chat_command" );
+            if( chat_command == null ) throw new ArgumentNullException( "chat_command" );
 
             this._ChatCommands.Add( chat_command );
         }

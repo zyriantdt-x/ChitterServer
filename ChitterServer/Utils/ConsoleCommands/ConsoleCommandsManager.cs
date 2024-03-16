@@ -14,6 +14,8 @@ namespace ChitterServer.Utils.ConsoleCommands {
         internal ConsoleCommandsManager() {
             this._ConsoleCommands = new List<IConsoleCommand>();
             this.RegisterConsoleCommands();
+
+            _Log.Info( $"ConsoleCommandsManager ({this._ConsoleCommands.Count} commands) -> INITIALISED!" );
         }
 
         private void RegisterConsoleCommands() {
@@ -22,27 +24,21 @@ namespace ChitterServer.Utils.ConsoleCommands {
         }
 
         private void RegisterConsoleCommand( IConsoleCommand console_command ) {
-            if( console_command == null )
-                throw new ArgumentNullException( "console_command" );
+            if( console_command == null ) throw new ArgumentNullException( "console_command" );
 
             this._ConsoleCommands.Add( console_command );
         }
 
         private IConsoleCommand GetConsoleCommand( string identifier ) {
-            if( String.IsNullOrWhiteSpace( identifier ) )
-                throw new ArgumentNullException( "identifier" );
+            if( String.IsNullOrWhiteSpace( identifier ) ) throw new ArgumentNullException( "identifier" );
 
             IConsoleCommand command = this._ConsoleCommands.FirstOrDefault( x => x.Identifier == identifier );
 
-            if( command == null )
-                throw new ConsoleCommandNotFoundException( identifier );
-
-            return command;
+            return command ?? throw new ConsoleCommandNotFoundException( identifier );
         }
 
         internal void HandleConsoleInput( string input ) {
-            if( string.IsNullOrWhiteSpace( input ) )
-                return; // we don't need to do anything with this... or even throw an exception which is nice!
+            if( String.IsNullOrWhiteSpace( input ) ) return; // we don't need to do anything with this... or even throw an exception which is nice!
 
             string[] split_string = input.Split( ' ' ); // split_string[ 0 ] is the identifier
 

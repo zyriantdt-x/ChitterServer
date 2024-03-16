@@ -18,28 +18,25 @@ namespace ChitterServer.Chat.Users {
         }
 
         internal void RegisterChatUser( ChatUser chat_user ) {
-            if( chat_user == null )
-                throw new ArgumentNullException( "chat_user" );
+            if( chat_user == null ) throw new ArgumentNullException( "chat_user" );
 
             this._ChatUsers.Add( chat_user );
         }
 
         internal void DeregisterChatUser( ChatUser chat_user ) {
-            if( chat_user == null )
-                throw new ArgumentNullException( "chat_user" );
+            if( chat_user == null ) throw new ArgumentNullException( "chat_user" );
 
-            this._ChatUsers.Remove( chat_user );
+            if( !this._ChatUsers.Remove( chat_user ) ) throw new UserNotFoundException( chat_user.Username );
         }
 
         internal ChatUser GetChatUser( string uuid ) {
-            if( String.IsNullOrWhiteSpace( uuid ) )
-                throw new ArgumentNullException( "uuid" );
+            if( String.IsNullOrWhiteSpace( uuid ) ) throw new ArgumentNullException( "uuid" );
 
             throw new NotImplementedException();
         }
 
-        internal List<ChatUser> ChatUsers { get => this._ChatUsers; } // i really don't like this, but i need it for console commands
+        internal List<ChatUser> ChatUsers => this._ChatUsers;  // i really don't like this, but i need it for console commands
 
-        internal static ILog Log { get => _Log; }
+        internal static ILog Log => _Log;
     }
 }

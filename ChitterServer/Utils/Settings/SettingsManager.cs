@@ -38,31 +38,23 @@ namespace ChitterServer.Utils.Settings {
                 }
             }
 
-            foreach(DataRow setting_row in settings_table.Rows) {
-                this.RegisterSetting( Convert.ToString( setting_row[ "key" ] ), Convert.ToString( setting_row[ "value" ] ) );
-            }
+            foreach(DataRow setting_row in settings_table.Rows) this.RegisterSetting( Convert.ToString( setting_row[ "key" ] ), Convert.ToString( setting_row[ "value" ] ) );
         }
 
         private void RegisterSetting( string key, string value ) {
-            if( String.IsNullOrWhiteSpace( key ) )
-                throw new ArgumentNullException( "key" );
+            if( String.IsNullOrWhiteSpace( key ) ) throw new ArgumentNullException( "key" );
 
-            if( String.IsNullOrWhiteSpace( value ) )
-                throw new ArgumentNullException( "value" );
+            if( String.IsNullOrWhiteSpace( value ) ) throw new ArgumentNullException( "value" );
 
             this._Settings.Add( key, value );
         }
 
         public string GetSetting( string key ) {
-            if( String.IsNullOrWhiteSpace( key ) )
-                throw new ArgumentNullException( "key" );
+            if( String.IsNullOrWhiteSpace( key ) ) throw new ArgumentNullException( "key" );
 
             string value;
 
-            if( !this._Settings.TryGetValue( key, out value ) )
-                throw new SettingNotFoundException( key );
-
-            return value;
+            return this._Settings.TryGetValue( key, out value ) ? value : throw new SettingNotFoundException( key );
         }
     }
 }

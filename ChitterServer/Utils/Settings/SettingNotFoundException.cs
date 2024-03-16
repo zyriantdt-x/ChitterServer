@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ChitterServer.Utils.Settings {
     internal class SettingNotFoundException : Exception {
-        internal SettingNotFoundException( string setting ) : base( $"Attempt to locate non-existing setting '{setting}'" ) { }
+        internal string Setting { get; }
+        internal SettingNotFoundException( string setting ) {
+            this.Setting = setting;
+        }
     }
 }

@@ -42,31 +42,25 @@ namespace ChitterServer.Chat.Channels {
             }
 
             // register each channel
-            foreach( DataRow channel_row in channels_table.Rows ) {
-                this.RegisterChannel(new Channel( channel_row ));
-            }
+            foreach( DataRow channel_row in channels_table.Rows ) this.RegisterChannel(new Channel( channel_row ));
         }
 
         internal void RegisterChannel( Channel channel ) {
-            if( channel == null )
-                throw new ArgumentNullException( "channel" );
+            if( channel == null ) throw new ArgumentNullException( "channel" );
 
             this._Channels.Add( channel );
         }
         
         internal Channel GetChannel( string uuid ) {
-            if( uuid == null )
-                throw new ArgumentNullException( "uuid" );
+            if( uuid == null ) throw new ArgumentNullException( "uuid" );
 
             Channel channel = this._Channels.FirstOrDefault( x => x.Uuid == uuid );
-            if( channel == null )
-                throw new ChannelNotFoundException( uuid );
 
-            return channel;
+            return channel ?? throw new ChannelNotFoundException( uuid );
         }
 
-        internal static ILog Log { get => _Log; }
+        internal static ILog Log => _Log;
 
-        internal List<Channel> Channels { get => this._Channels; }
+        internal List<Channel> Channels => this._Channels;
     }
 }

@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace ChitterServer.Communication.Clients {
     internal class CommunicationClientNotFoundException : Exception {
-        internal CommunicationClientNotFoundException( string search_type, string search_item ) 
-            : base( $"CommunicationClient instance not found based on search parameters: {search_type} {search_item}" ) {}
+        internal string SearchType { get; }
+        internal string SearchItem { get; }
+        internal CommunicationClientNotFoundException( string search_type, string search_item ) {
+            this.SearchType = search_type;
+            this.SearchItem = search_item;
+        }
     }
 }

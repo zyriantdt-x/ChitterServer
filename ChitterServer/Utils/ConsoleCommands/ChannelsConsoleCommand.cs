@@ -17,9 +17,7 @@ namespace ChitterServer.Utils.ConsoleCommands {
         }
 
         private void HandleAllChannels() {
-            foreach( Channel channel in ChitterEnvironment.ChatManager.ChannelManager.Channels ) {
-                Console.WriteLine( $"{channel.Uuid} | {channel.DisplayName} | {channel.ActiveUsers.Count}" );
-            }
+            foreach( Channel channel in ChitterEnvironment.ChatManager.ChannelManager.Channels ) Console.WriteLine( $"{channel.Uuid} | {channel.DisplayName} | {channel.ActiveUsers.Count}" );
         }
 
         private void HandleChannel( string channel_uuid ) {
@@ -32,9 +30,7 @@ namespace ChitterServer.Utils.ConsoleCommands {
             }
 
             Console.WriteLine( $"{channel.Uuid} | {channel.DisplayName} | {channel.ActiveUsers.Count}" );
-            foreach(ChannelUser active_user in channel.ActiveUsers) {
-                Console.WriteLine( $"{active_user.ChatUser.Uuid} | {active_user.ChatUser.Username}" );
-            }
+            foreach(ChannelUser active_user in channel.ActiveUsers) Console.WriteLine( $"{active_user.ChatUser.Uuid} | {active_user.ChatUser.Username}" );
         }
     }
 }

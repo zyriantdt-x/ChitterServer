@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace ChitterServer.Communication.Handlers.Incoming {
     internal class MalformedPayloadException : Exception {
-        internal MalformedPayloadException()
-            : base("Expected data was not provided in payload.") { }
+        internal string MissingData { get; }
+        internal MalformedPayloadException() { }
 
-        internal MalformedPayloadException(string missing_data)
-            : base( $"Expected data was not provided in payload: {missing_data}" ) { }
+        internal MalformedPayloadException(string missing_data) {
+            this.MissingData = missing_data;
+        }
     }
 }

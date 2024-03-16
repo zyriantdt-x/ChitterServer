@@ -25,22 +25,17 @@ namespace ChitterServer.Communication.Handlers.Incoming {
         }
 
         private void RegisterMessageHandler( IIncomingMessageHandler incoming_message_handler ) {
-            if( incoming_message_handler == null )
-                throw new ArgumentNullException( "incoming_message_handler" );
+            if( incoming_message_handler == null ) throw new ArgumentNullException( "incoming_message_handler" );
 
             this._IncomingMessageHandlers.Add( incoming_message_handler );
         }
 
         internal IIncomingMessageHandler GetMessageHandler( string identifier ) {
-            if( String.IsNullOrWhiteSpace( identifier ) )
-                throw new ArgumentNullException( "identifier" );
+            if( String.IsNullOrWhiteSpace( identifier ) ) throw new ArgumentNullException( "identifier" );
 
             IIncomingMessageHandler handler = this._IncomingMessageHandlers.FirstOrDefault( x => x.Identifier == identifier );
 
-            if( handler == null )
-                throw new IncomingEventNotFoundException( identifier );
-
-            return handler;
+            return handler ?? throw new IncomingEventNotFoundException( identifier );
         }
     }
 }

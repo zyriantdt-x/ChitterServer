@@ -15,8 +15,7 @@ namespace ChitterServer.Communication.Handlers.Incoming {
         public void Handle( CommunicationClient communication_client, MessageStructure message ) {
             object message_text_as_obj;
 
-            if( !message.Body.TryGetValue( "message", out message_text_as_obj ) )
-                throw new MalformedPayloadException( "body.message" );
+            if( !message.Body.TryGetValue( "message", out message_text_as_obj ) ) throw new MalformedPayloadException( "body.message" );
 
             string message_text = Convert.ToString( message_text_as_obj );
 
@@ -24,7 +23,7 @@ namespace ChitterServer.Communication.Handlers.Incoming {
             // but for now, let's broadcast the message to the channel
             // we will remove HTML stuff just in case!
 
-            message_text = Regex.Replace( message_text, "<.*?>", string.Empty ); // i don't think anyone knows how to use regex
+            message_text = Regex.Replace( message_text, "<.*?>", String.Empty ); // i don't think anyone knows how to use regex
 
             communication_client.ChatUser.ActiveChannel.Broadcast( new ChatMessageHandler( DateTime.Now, communication_client.ChatUser.Username, message_text ) );
         }

@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 namespace ChitterServer.Communication.Handlers.Outgoing {
     internal class ShalomHandler : OutgoingMessage {
         internal ShalomHandler( string uuid ) 
-            : base( "SHALOM" ) {
-            AppendObject( "abc", "def" );
-        }
+            : base( "SHALOM" ) {}
     }
 }

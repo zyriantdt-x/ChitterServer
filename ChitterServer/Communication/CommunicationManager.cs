@@ -17,12 +17,10 @@ namespace ChitterServer.Communication {
     internal class CommunicationManager {
         private static readonly ILog _Log = LogManager.GetLogger( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType );
 
-        private const string WS_LOCATION_SETTING_KEY = "ws_location";
-
         private IWebSocketServer _WebSocketServer;
         private CommunicationClientManager _CommunicationClientManager;
 
-        private IncomingMessageManager _IncomingMessageMAnager;
+        private IncomingMessageManager _IncomingMessageManager;
 
         internal CommunicationManager() {
             this._WebSocketServer = new WebSocketServer( ChitterEnvironment.SettingsManager.GetSetting( "ws_location" ) );
@@ -49,7 +47,7 @@ namespace ChitterServer.Communication {
 
             this._CommunicationClientManager = new CommunicationClientManager();
 
-            this._IncomingMessageMAnager = new IncomingMessageManager();
+            this._IncomingMessageManager = new IncomingMessageManager();
 
             this._WebSocketServer.Start( socket => {
                 socket.OnOpen = () => {
@@ -87,16 +85,12 @@ namespace ChitterServer.Communication {
                         _Log.Debug( $"Message received from {display_name} -> {message}" );
 
                         MessageStructure payload = JsonConvert.DeserializeObject<MessageStructure>( message );
-                        if( payload == null )
-                            throw new MalformedPayloadException();
+                        if( payload == null ) throw new MalformedPayloadException();
+                        if( String.IsNullOrWhiteSpace( payload.Message ) ) throw new MalformedPayloadException( "message" );
 
-                        if( String.IsNullOrWhiteSpace( payload.Message ) )
-                            throw new MalformedPayloadException( "message" );
+                        if( !communication_client.IsAuthenticated && ( payload.Message != "REQUEST_AUTHENTICATE" ) ) throw new ClientNotAuthenticatedException( communication_client.WebSocketConnection.ConnectionInfo.ClientIpAddress, payload.Message );
 
-                        if( !communication_client.IsAuthenticated && ( payload.Message != "REQUEST_AUTHENTICATE" ) )
-                            throw new ClientNotAuthenticatedException( communication_client.WebSocketConnection.ConnectionInfo.ClientIpAddress, payload.Message );
-
-                        IIncomingMessageHandler message_handler = this._IncomingMessageMAnager.GetMessageHandler( payload.Message );
+                        IIncomingMessageHandler message_handler = this._IncomingMessageManager.GetMessageHandler( payload.Message );
 
                         message_handler.Handle( communication_client, payload );
                     } catch( Exception ex ) { // if we're going to send the exception to user, we should catch the exceptions to send crafted messages just in case we give away too much data...
@@ -117,15 +111,13 @@ namespace ChitterServer.Communication {
         }
 
         internal static void LogOutboundMessage( string display_name, string json_msg ) {
-            if( String.IsNullOrWhiteSpace( display_name ) )
-                throw new ArgumentNullException( "display_name" );
+            if( String.IsNullOrWhiteSpace( display_name ) ) throw new ArgumentNullException( "display_name" );
 
-            if( String.IsNullOrWhiteSpace( json_msg ) )
-                throw new ArgumentNullException( "json_msg" );
+            if( String.IsNullOrWhiteSpace( json_msg ) ) throw new ArgumentNullException( "json_msg" );
 
             _Log.Debug( $"Sent message to {display_name} -> {json_msg}" );
         }
 
-        internal CommunicationClientManager CommunicationClientManager { get => this._CommunicationClientManager; }
+        internal CommunicationClientManager CommunicationClientManager => this._CommunicationClientManager;
     }
 }

@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace ChitterServer.Communication.Clients {
     internal class ClientNotAuthenticatedException : Exception {
-        internal ClientNotAuthenticatedException(string ip) 
-            : base($"Attempt made to access ChatUser for an unauthenticated WebSocket client: {ip}") {}
+        internal string Ip { get; }
+        internal string WsMessage { get; }
+        internal ClientNotAuthenticatedException(string ip) {
+            this.Ip = ip;
+        }
 
-        internal ClientNotAuthenticatedException( string ip, string message )
-            : base( $"Attempt made to access privileged message by an unauthenticated WebSocketclient by: {ip} for: {message}" ) { }
+        internal ClientNotAuthenticatedException( string ip, string message ) {
+            this.Ip = ip;
+            this.WsMessage = message;
+        }
     }
 }

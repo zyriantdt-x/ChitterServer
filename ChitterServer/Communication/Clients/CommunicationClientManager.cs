@@ -19,39 +19,29 @@ namespace ChitterServer.Communication.Clients {
         }
 
         public CommunicationClient GetCommunicationClient( string uuid ) {
-            if( uuid == null )
-                throw new ArgumentNullException( "uuid" );
+            if( uuid == null ) throw new ArgumentNullException( "uuid" );
 
             CommunicationClient communication_client = this._CommunicationClients.FirstOrDefault( x => x.ChatUser.Uuid == uuid );
-            if( communication_client == null )
-                throw new CommunicationClientNotFoundException( "uuid", uuid );
-
-            return communication_client;
+            return communication_client ?? throw new CommunicationClientNotFoundException( "uuid", uuid );
         }
 
         public CommunicationClient GetCommunicationClient( IWebSocketConnection web_socket_connection ) {
-            if( web_socket_connection == null )
-                throw new ArgumentNullException( "web_socket_connection" );
+            if( web_socket_connection == null ) throw new ArgumentNullException( "web_socket_connection" );
 
             CommunicationClient communication_client = this._CommunicationClients.FirstOrDefault( x => x.WebSocketConnection == web_socket_connection );
-            if( communication_client == null )
-                throw new CommunicationClientNotFoundException( "iwebsocketconnection", web_socket_connection.ConnectionInfo.ClientIpAddress );
-
-            return communication_client;
+            return communication_client ?? throw new CommunicationClientNotFoundException( "iwebsocketconnection", web_socket_connection.ConnectionInfo.ClientIpAddress );
         }
 
         public void RegisterCommunicationClient( CommunicationClient communication_client ) {
-            if( communication_client == null )
-                throw new ArgumentNullException( "communication_client" );
+            if( communication_client == null ) throw new ArgumentNullException( "communication_client" );
 
             this._CommunicationClients.Add( communication_client );
         }
 
         public void DeregisterCommunicationClient( CommunicationClient communication_client ) {
-            if( communication_client == null )
-                throw new ArgumentNullException( "communication_client" );
+            if( communication_client == null ) throw new ArgumentNullException( "communication_client" );
 
-            this._CommunicationClients.Remove( communication_client );
+            _ = this._CommunicationClients.Remove( communication_client );
         }
 
         public void DeregisterCommunicationClient( IWebSocketConnection web_socket_connection ) {
@@ -60,7 +50,7 @@ namespace ChitterServer.Communication.Clients {
 
             CommunicationClient communication_client = this.GetCommunicationClient( web_socket_connection );
 
-            DeregisterCommunicationClient( communication_client );
+            this.DeregisterCommunicationClient( communication_client );
         }
     }
 }

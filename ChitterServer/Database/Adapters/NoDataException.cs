@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace ChitterServer.Database.Adapters {
     internal class NoDataException : Exception {
-        internal NoDataException(string query)
-            : base($"Attempt to access data when query returned no results: {query}") { }
+        internal string Query { get; }
+        internal NoDataException(string query) {
+            this.Query = query;
+        }
     }
 }

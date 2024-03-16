@@ -1,4 +1,5 @@
 ﻿using ChitterServer.Chat.Channels;
+using ChitterServer.Chat.Commands;
 using ChitterServer.Chat.Users;
 using log4net;
 using System;
@@ -13,15 +14,18 @@ namespace ChitterServer.Chat {
 
         private ChatUserManager _ChatUserManager;
         private ChannelManager _ChannelManager;
+        private ChatCommandsManager _ChatCommandsManager;
 
         internal ChatManager() {
             this._ChatUserManager = new ChatUserManager();
             this._ChannelManager = new ChannelManager();
+            this._ChatCommandsManager = new ChatCommandsManager();
 
             _Log.Info( "ChatManager -> INITIALISED!" );
         }
 
-        internal ChatUserManager ChatUserManager { get => this._ChatUserManager; }
-        internal ChannelManager ChannelManager { get => this._ChannelManager; }
+        internal ChatUserManager ChatUserManager => this._ChatUserManager;
+        internal ChannelManager ChannelManager => this._ChannelManager;
+        internal ChatCommandsManager ChatCommandsManager => this._ChatCommandsManager;
     }
 }

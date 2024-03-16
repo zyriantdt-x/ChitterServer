@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace ChitterServer.Communication.Handlers.Incoming {
     internal class IncomingEventNotFoundException : Exception {
-        internal IncomingEventNotFoundException( string identifier )
-            : base( $"Unable to find incoming event '{identifier}'" ) { }
+        internal string Identifier { get; }
+        internal IncomingEventNotFoundException( string identifier ) {
+            this.Identifier = identifier;
+        }
     }
 }

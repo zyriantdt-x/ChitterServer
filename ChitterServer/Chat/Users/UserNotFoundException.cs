@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace ChitterServer.Chat.Users {
     internal class UserNotFoundException : Exception {
-        internal UserNotFoundException( string username )
-            : base( $"Attempt to authenticate '{username}' failed" ) { }
+        internal string Username { get; }
+        internal UserNotFoundException( string username ) {
+            this.Username = username;
+        }
     }
 }

@@ -54,10 +54,10 @@ namespace ChitterServer {
             _Log.Info( "Chitter Server has initialised successfully!\n" );
         }
 
-        internal static CommunicationManager CommunicationManager { get => _CommunicationManager; }
-        internal static DatabaseManager DatabaseManager { get => _DatabaseManager; }
-        internal static ChatManager ChatManager { get => _ChatManager; }
-        internal static SettingsManager SettingsManager { get => _SettingsManager; }
-        internal static ConsoleCommandsManager ConsoleCommandsManager { get => _ConsoleCommandsManager; }
+        internal static CommunicationManager CommunicationManager => _CommunicationManager;
+        internal static DatabaseManager DatabaseManager => _DatabaseManager;
+        internal static ChatManager ChatManager => _ChatManager;
+        internal static SettingsManager SettingsManager => _SettingsManager;
+        internal static ConsoleCommandsManager ConsoleCommandsManager => _ConsoleCommandsManager;
     }
 }
